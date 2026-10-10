@@ -627,8 +627,48 @@
             <p>Grammar, Vocabulary, and Exercises for Unit 6.</p>
         </div>
     </div>
-    <!-- بەشی نوێی دەربارەی ئێمە و پەیوەندی بە دیزاینی مۆدێرن -->
+<!-- بەشی دەربارەی ئێمە لەگەڵ دوگمەی لیدی خولاوە -->
 <section id="about-us" style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 25px; margin: 30px auto; max-width: 90%; text-align: center; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);">
+    
+    <style>
+        @keyframes rotateLed {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .led-btn-wrapper {
+            position: relative;
+            display: inline-block;
+            padding: 2px;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        .led-btn-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(#00f2fe, #4facfe, #00c6ff, #0072ff, #00f2fe);
+            animation: rotateLed 3s linear infinite;
+        }
+        .led-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 26px;
+            text-decoration: none;
+            border-radius: 28px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            z-index: 1;
+        }
+    </style>
+
     <h2 style="color: #ffffff; font-size: 1.5rem; margin-bottom: 12px; font-weight: bold;">دەربارەی بانکی پۆلی ١٢</h2>
     <p style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.7; max-width: 600px; margin: 0 auto 20px auto;">
         سەکۆی «بانکی پۆلی ١٢» ئامانجی ئاسانکارییە بۆ قوتابیانی پۆلی ١٢ی ئامادەیی بۆ دەستگەیشتن بە پرسیارە وزارییەکان، کورتکراوەکان و سەرچاوەکانی خوێندن بە شێوازێکی خێرا و ڕێکخراو.
@@ -636,10 +676,13 @@
     
     <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; margin-top: 15px;">
         <h3 style="color: #38bdf8; font-size: 1.1rem; margin-bottom: 8px;">پەیوەندی و پشتگیری</h3>
-        <p style="color: #94a3b8; font-size: 0.88rem; margin-bottom: 15px;">بۆ ناردنی ڕەخنە، پێشنیار یان پرسیارەکانت دەتوانیت ڕاستەوخۆ پەیوەندیمان پێوە بکەیت:</p>
-        <a href="https://t.me/HR_02008" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, #0088cc, #00a8ff); color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4); transition: all 0.3s ease;">
-            📱 کەناڵی تێلیگرام
-        </a>
+        <p style="color: #94a3b8; font-size: 0.88rem; margin-bottom: 18px;">بۆ ناردنی ڕەخنە، پێشنیار یان پرسیارەکانت دەتوانیت ڕاستەوخۆ پەیوەندیمان پێوە بکەیت:</p>
+        
+        <div class="led-btn-wrapper">
+            <a href="https://t.me/HR_02008" target="_blank" class="led-btn">
+                📱 کەناڵی تێلیگرام
+            </a>
+        </div>
     </div>
 </section>
     <footer>
