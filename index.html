@@ -796,27 +796,22 @@
     </script>
 <!-- AI Assistant Widget for BankiPoli12 -->
 <div id="ai-widget-container">
-  <!-- AI Toggle Button -->
   <button id="ai-toggle-btn" onclick="toggleAIChat()" style="position: fixed; bottom: 20px; right: 20px; background-color: #007bff; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 28px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 9999; display: flex; align-items: center; justify-content: center;">
     🤖
   </button>
 
-  <!-- AI Chat Window -->
   <div id="ai-chat-box" style="display: none; position: fixed; bottom: 90px; right: 20px; width: 330px; height: 430px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.25); z-index: 9999; flex-direction: column; overflow: hidden; font-family: sans-serif; direction: rtl;">
-    <!-- Header -->
     <div style="background-color: #007bff; color: white; padding: 12px 16px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
       <span>ژیریی دەستکردی بانکی پۆلی ١٢</span>
       <button onclick="toggleAIChat()" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer;">✕</button>
     </div>
 
-    <!-- Messages Container -->
     <div id="ai-messages" style="flex: 1; padding: 12px; overflow-y: auto; background-color: #f8f9fa; font-size: 14px; display: flex; flex-direction: column; gap: 8px;">
       <div style="background: #e9ecef; color: #333; padding: 8px 12px; border-radius: 10px; max-width: 85%; align-self: flex-start;">
-        سڵاو! من یاریدەدەری ژیریی دەستکردی **بانکی پۆلی ١٢**م. چۆن دەتوانم هاوکاریت بکەم لە بابەتەکانی پۆلی ١٢دا؟
+        سڵاو! من یاریدەدەری ژیریی دەستکردی **بانکی پۆلی ١٢**م. چۆن دەتوانم هاوکاریت بکەم؟
       </div>
     </div>
 
-    <!-- Input Box -->
     <div style="padding: 10px; background: white; border-top: 1px solid #ddd; display: flex; gap: 6px;">
       <input type="text" id="ai-user-input" placeholder="پرسیارەکەت بنووسە..." style="flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 20px; outline: none; font-size: 13px;" onkeypress="if(event.key==='Enter') sendAIMessage()" />
       <button onclick="sendAIMessage()" style="background: #007bff; color: white; border: none; padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 13px;">ناردن</button>
@@ -825,6 +820,22 @@
 </div>
 
 <script>
+  const GEMINI_API_KEY = "curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent" \
+  -H 'Content-Type: application/json' \
+  -H 'X-goog-api-key: AQ.Ab8RN6LHIm5Zu7IN8LbrkkQ3YyiUAjwl_0emMOKbE0QicJ3-XQ' \
+  -X POST \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Explain how AI works in a few words"
+          }
+        ]
+      }
+    ]
+  }'";
+
   function toggleAIChat() {
     const chatBox = document.getElementById('ai-chat-box');
     if (chatBox.style.display === 'none' || chatBox.style.display === '') {
@@ -834,14 +845,13 @@
     }
   }
 
-  function sendAIMessage() {
+  async function sendAIMessage() {
     const input = document.getElementById('ai-user-input');
     const messages = document.getElementById('ai-messages');
     const text = input.value.trim();
 
     if (!text) return;
 
-    // Display user message
     const userMsg = document.createElement('div');
     userMsg.style.cssText = "background: #007bff; color: white; padding: 8px 12px; border-radius: 10px; max-width: 85%; align-self: flex-end;";
     userMsg.textContent = text;
@@ -850,15 +860,47 @@
     input.value = '';
     messages.scrollTop = messages.scrollHeight;
 
-    // Simulated Bot response (You can link your backend API here later)
-    setTimeout(() => {
+    const loadingMsg = document.createElement('div');
+    loadingMsg.style.cssText = "background: #e9ecef; color: #666; padding: 8px 12px; border-radius: 10px; max-width: 85%; align-self: flex-start; font-style: italic;";
+    loadingMsg.textContent = "لە وەڵامدانەوەدایە...";
+    messages.appendChild(loadingMsg);
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: "تۆ یاریدەدەری زیرەکی ماڵپەڕی (بانکی پۆلی ١٢)ی. وەڵامی کورت و یارمەتیدەر بدەرەوە بە کوردی بۆ قوتابیانی پۆلی ١٢:\n" + text }]
+          }]
+        })
+      });
+
+      const data = await response.json();
+      messages.removeChild(loadingMsg);
+
       const botMsg = document.createElement('div');
       botMsg.style.cssText = "background: #e9ecef; color: #333; padding: 8px 12px; border-radius: 10px; max-width: 85%; align-self: flex-start;";
-      botMsg.textContent = "سوپاس بۆ پرسیارەکەت! من دەتوانم یارمەتیت بدم لە ڕوونکردنەوەی وانەکان و دۆزینەوەی فایلی تاقیکردنەوەکانی پۆلی ١٢.";
+
+      if (data.candidates && data.candidates[0].content.parts[0].text) {
+        botMsg.textContent = data.candidates[0].content.parts[0].text;
+      } else {
+        botMsg.textContent = "ببوورە، هەڵەیەک لە وەڵامدانەوەدا ڕوویدا.";
+      }
+
       messages.appendChild(botMsg);
       messages.scrollTop = messages.scrollHeight;
-    }, 600);
+    } catch (error) {
+      messages.removeChild(loadingMsg);
+      const errorMsg = document.createElement('div');
+      errorMsg.style.cssText = "background: #f8d7da; color: #721c24; padding: 8px 12px; border-radius: 10px; max-width: 85%; align-self: flex-start;";
+      errorMsg.textContent = "کێشەیەک لە پەیوەندی دروستبوو. تکایە دواتر هەوڵبدەرەوە.";
+      messages.appendChild(errorMsg);
+      messages.scrollTop = messages.scrollHeight;
+    }
   }
-</script>
+        </script>
+    
 </body>
 </html>
