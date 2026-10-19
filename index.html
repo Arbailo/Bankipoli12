@@ -820,21 +820,7 @@
 </div>
 
 <script>
-  const GEMINI_API_KEY = "curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent" \
-  -H 'Content-Type: application/json' \
-  -H 'X-goog-api-key: AQ.Ab8RN6LHIm5Zu7IN8LbrkkQ3YyiUAjwl_0emMOKbE0QicJ3-XQ' \
-  -X POST \
-  -d '{
-    "contents": [
-      {
-        "parts": [
-          {
-            "text": "Explain how AI works in a few words"
-          }
-        ]
-      }
-    ]
-  }'";
+  const GEMINI_API_KEY = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
 
   function toggleAIChat() {
     const chatBox = document.getElementById('ai-chat-box');
